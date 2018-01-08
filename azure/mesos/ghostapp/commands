@@ -1,0 +1,17 @@
+###
+Here you have an ghost application, deploy that on dcos azure using these commands
+
+
+###
+
+dcos marathon app add ghost.json
+
+####
+
+to check the app go to the public IP. If you don't know the public IP the run this command
+
+az network public-ip list --resource-group devops-azureinternational-test0002-rg01 --query "[?contains(name,'dcos-agent')].[ipAddress]" -o tsv
+
+####
+
+

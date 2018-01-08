@@ -1,0 +1,69 @@
+{
+  "apiVersion": "vlabs",
+  "properties": {
+    "orchestratorProfile": {
+      "orchestratorType": "DCOS",
+      "orchestratorRelease": "1.9",
+      "orchestratorVersion": "1.9.0",
+      "dcosConfig": {
+        "dcosWindowsBootstrapURL": "http://dcos-win.westus.cloudapp.azure.com/dcos-windows/stable/"
+      }
+    },
+    "masterProfile": {
+      "count": 1,
+      "dnsPrefix": "mmsdcostest1",
+      "vmSize": "Standard_D2_v2",
+      "vnetSubnetID": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01",
+      "firstConsecutiveStaticIP": "172.25.13.64",
+      "storageProfile": "ManagedDisks",
+      "oauthEnabled": false,
+      "preProvisionExtension": null,
+      "extensions": [],
+      "distro": "ubuntu"
+    },
+    "agentPoolProfiles": [
+      {
+        "name": "agentprivate",
+        "count": 3,
+        "vmSize": "Standard_D2_v2",
+        "osType": "Linux",
+        "availabilityProfile": "VirtualMachineScaleSets",
+        "storageProfile": "ManagedDisks",
+        "vnetSubnetID": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01",
+        "distro": "ubuntu",
+        "fqdn": "",
+        "preProvisionExtension": null,
+        "extensions": []
+      },
+      {
+        "name": "agentpublic",
+        "count": 3,
+        "vmSize": "Standard_D2_v2",
+        "dnsPrefix": "mmsdcostest2",
+        "osType": "Linux",
+        "ports": [
+          80,
+          443,
+          8080
+        ],
+        "availabilityProfile": "VirtualMachineScaleSets",
+        "storageProfile": "ManagedDisks",
+        "vnetSubnetID": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01",
+        "distro": "ubuntu",
+        "fqdn": "",
+        "preProvisionExtension": null,
+        "extensions": []
+      }
+    ],
+    "linuxProfile": {
+      "adminUsername": "azureuser",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3ar5daqOXKHnxD7W5rvHaCF3sPEA9o7FR9Vhl9LgDPEPmXrS+MuE6L5MgkIu+xUpV2CB6Ozkky3HI+uGhzUtLM8PGKXB0ZcWlWwirFe6FVNebCRkF9u+JzeYA4YCQEA6iPcPfi2oE21WA25IZudKLjEYKqwu4UnjStMm6YNk3EaN1oX/QDE3MmxsKUC+iCaGylHGzLW3QDWUUZTLozTiWvDdGq0bfiX56nhnOMWxq4ij8cESVrU0GjnwXKnt4u5noUHDkX67DcQaS3RkwBNXcn6YM1cUvkd21jKwKyI4SrHrN5bc9uPDAwaT6LFbinVFYio7n18pc+yT7XJ4OsiNf maya@W4DEUMSY9000087"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "agentprivateCount": {
+      "value": 3
+    },
+    "agentprivateVMSize": {
+      "value": "Standard_D2_v2"
+    },
+    "agentprivateVnetSubnetID": {
+      "value": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01"
+    },
+    "agentpublicCount": {
+      "value": 3
+    },
+    "agentpublicEndpointDNSNamePrefix": {
+      "value": "mmsdcostest2"
+    },
+    "agentpublicVMSize": {
+      "value": "Standard_D2_v2"
+    },
+    "agentpublicVnetSubnetID": {
+      "value": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01"
+    },
+    "dcosBootstrapURL": {
+      "value": "https://dcosio.azureedge.net/dcos/stable/bootstrap/58fd0833ce81b6244fc73bf65b5deb43217b0bd7.bootstrap.tar.xz"
+    },
+    "dcosWindowsBootstrapURL": {
+      "value": "http://dcos-win.westus.cloudapp.azure.com/dcos-windows/stable/"
+    },
+    "firstConsecutiveStaticIP": {
+      "value": "172.25.13.64"
+    },
+    "fqdnEndpointSuffix": {
+      "value": "cloudapp.azure.com"
+    },
+    "linuxAdminUsername": {
+      "value": "azureuser"
+    },
+    "location": {
+      "value": ""
+    },
+    "masterEndpointDNSNamePrefix": {
+      "value": "mmsdcostest1"
+    },
+    "masterVMSize": {
+      "value": "Standard_D2_v2"
+    },
+    "masterVnetSubnetID": {
+      "value": "/subscriptions/910732ce-7b29-45b9-9516-d2af3798be72/resourceGroups/devops-azureinternational-test0002-rg01/providers/Microsoft.Network/virtualNetworks/devops-azureinternational-test0002-vn01/subnets/devops-azureinternational-test0002-subnet01"
+    },
+    "osImageOffer": {
+      "value": "UbuntuServer"
+    },
+    "osImagePublisher": {
+      "value": "Canonical"
+    },
+    "osImageSKU": {
+      "value": "16.04-LTS"
+    },
+    "osImageVersion": {
+      "value": "16.04.201706191"
+    },
+    "sshRSAPublicKey": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3ar5daqOXKHnxD7W5rvHaCF3sPEA9o7FR9Vhl9LgDPEPmXrS+MuE6L5MgkIu+xUpV2CB6Ozkky3HI+uGhzUtLM8PGKXB0ZcWlWwirFe6FVNebCRkF9u+JzeYA4YCQEA6iPcPfi2oE21WA25IZudKLjEYKqwu4UnjStMm6YNk3EaN1oX/QDE3MmxsKUC+iCaGylHGzLW3QDWUUZTLozTiWvDdGq0bfiX56nhnOMWxq4ij8cESVrU0GjnwXKnt4u5noUHDkX67DcQaS3RkwBNXcn6YM1cUvkd21jKwKyI4SrHrN5bc9uPDAwaT6LFbinVFYio7n18pc+yT7XJ4OsiNf maya@W4DEUMSY9000087"
+    },
+    "targetEnvironment": {
+      "value": "AzurePublicCloud"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+## to create a deployment 
+ --> kubectl create -f mongo.yaml
+
+## to autoscale a deployment
+ --> kubectl autoscale deployment mongo --min=3 --max=5 --cpu-percent=80
+
+## to delete autoscaling
+ --> kubectl delete hpa NAME-OF-HPA
+
+## to get which services are autoscaled
+ --> kubectl get hpa
+#
+kubectl run wordpress --image=tutum/wordpress --port=80
+
+kubectl expose deployment wordpress --type=LoadBalancer
+
+kubectl describe services wordpress
+
+kubectl get services wordpress

@@ -1,0 +1,143 @@
+---
+name: bosh
+
+releases:
+- name: bosh
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=263.3.0
+  sha1: 39a0c2a4bb478a01861dc2ff7cce35b1be79a34c
+- name: bosh-openstack-cpi
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-openstack-cpi-release?v=35
+  sha1: 314b040cb0df72651174d262892aa8c4d75f9031
+
+resource_pools:
+- name: vms
+  network: private
+  stemcell:
+    url: https://bosh.io/d/stemcells/bosh-openstack-kvm-ubuntu-trusty-go_agent?v=3468
+    sha1: 6776189ddaf6271c2a8c1b2b0e5462142cbd1a82
+  cloud_properties:
+    instance_type: m1.xlarge
+
+disk_pools:
+- name: disks
+  disk_size: 20_000
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: 172.26.1.0/25 # <--- Replace with a private subnet CIDR
+    gateway: 172.26.1.1 # <--- Replace with a private subnet's gateway
+    dns: [8.8.8.8] # <--- Replace with your DNS
+    cloud_properties: {net_id: fee2a600-25fe-4453-89d2-7363c4eeae7c} # <--- # Replace with private network UUID
+- name: public
+  type: vip
+
+jobs:
+- name: bosh
+  instances: 1
+
+  templates:
+  - {name: nats, release: bosh}
+  - {name: postgres-9.4, release: bosh}
+  - {name: blobstore, release: bosh}
+  - {name: director, release: bosh}
+  - {name: health_monitor, release: bosh}
+  - {name: registry, release: bosh}
+  - {name: openstack_cpi, release: bosh-openstack-cpi}
+
+  resource_pool: vms
+  persistent_disk_pool: disks
+
+  networks:
+  - name: private
+    static_ips: [172.26.1.20] # <--- Replace with a private IP
+    default: [dns, gateway]
+  - name: public
+    static_ips: [80.158.20.226] # <--- Replace with a floating IP
+
+  properties:
+    nats:
+      address: 127.0.0.1
+      user: nats
+      # password: nats-password # <--- Uncomment & change
+
+    postgres: &db
+      listen_address: 127.0.0.1
+      host: 127.0.0.1
+      user: postgres
+      password: digitaL6 # <--- Uncomment & change
+      database: bosh
+      adapter: postgres
+
+    registry:
+      address: 172.26.1.20 # <--- Replace with a private IP
+      host: 172.26.1.20 # <--- Replace with a private IP
+      db: *db
+      http:
+        user: admin
+        # password: admin # <--- Uncomment & change
+        port: 25777
+      username: admin
+      # password: admin # <--- Uncomment & change
+      port: 25777
+
+    blobstore:
+      address: 172.26.1.20 # <--- Replace with a private IP
+      port: 25250
+      provider: dav
+      director:
+        user: director
+        # password: director-password # <--- Uncomment & change
+      agent:
+        user: agent
+        # password: agent-password # <--- Uncomment & change
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: *db
+      cpi_job: openstack_cpi
+      max_threads: 3
+      user_management:
+        provider: local
+        local:
+          users:
+          # - {name: admin, password: admin} # <--- Uncomment & change
+          # - {name: hm, password: hm-password} # <--- Uncomment & change
+
+    hm:
+      director_account:
+        user: hm
+        # password: hm-password # <--- Uncomment & change
+      resurrector_enabled: true
+
+    openstack: &openstack
+      auth_url: https://iam.eu-de.otc.t-systems.com:443/v3 # <--- Replace with OpenStack Identity API endpoint
+      #project:  # <--- Replace with OpenStack project name
+      domain: OTC00000000001000000195 # <--- Replace with OpenStack domain name
+      username: Manoj Reddy Yalamareddy # <--- Replace with OpenStack username
+      api_key: yxcvBnm12 # <--- Replace with OpenStack password
+      default_key_name: manoj
+      default_security_groups: [default]
+
+    # agent: {mbus: "nats://nats:nats-password@PRIVATE-IP:4222"} # <--- Uncomment & change
+
+    ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
+
+cloud_provider:
+  template: {name: openstack_cpi, release: bosh-openstack-cpi}
+
+  ssh_tunnel:
+    host: 160.44.201.242 # <--- Replace with a floating IP
+    port: 22
+    user: vcap
+    private_key: ~/bosh/manoj.pem # Path relative to this manifest file
+
+  # mbus: "https://mbus:mbus-password@FLOATING-IP:6868" # <--- Uncomment & change
+
+  properties:
+    openstack: *openstack
+    # agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"} # <--- Uncomment & change
+    blobstore: {provider: local, path: /var/vcap/micro_bosh/data/cache}
+    ntp: *ntp

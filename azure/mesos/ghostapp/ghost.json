@@ -1,0 +1,57 @@
+{
+  "id": "/test",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 128,
+  "disk": 0,
+  "gpus": 0,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "ghost",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 2368,
+          "hostPort": 80,
+          "servicePort": 80,
+          "protocol": "tcp",
+          "name": "default"
+        }
+      ],
+      "privileged": false,
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "portIndex": 0,
+      "path": "/",
+      "protocol": "HTTP",
+      "ignoreHttp1xx": false
+    }
+  ],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 300,
+    "expungeAfterSeconds": 600
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "acceptedResourceRoles": [
+    "slave_public"
+  ],
+  "requirePorts": true,
+  "labels": {
+    "HAPROXY_GROUP": "external"
+  }
+}
